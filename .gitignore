@@ -1,0 +1,17 @@
+.dub
+docs.json
+__dummy.html
+docs/
+cerbo.so
+cerbo.dylib
+cerbo.dll
+cerbo.a
+cerbo.lib
+cerbo-test-*
+*.exe
+*.o
+*.obj
+*.lst
+*.swp
+build
+dub.selections.json

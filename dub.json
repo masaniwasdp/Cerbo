@@ -1,0 +1,8 @@
+{
+    "name": "cerbo",
+    "authors": [ "masaniwa" ],
+    "description": "A Twitter bot who executes codes of the Brainf*ck.",
+    "copyright": "Copyright © 2018, masaniwa",
+    "license": "MIT",
+    "targetPath": "$PACKAGE_DIR/build/"
+}
