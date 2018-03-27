@@ -38,4 +38,4 @@ class Parser
     }
 }
 
-private enum defaultMapping = "><+-.,[]";
+private enum defaultMapping = `><+-.,[]`;
