@@ -6,6 +6,8 @@ import std.array : array;
 import std.conv : to;
 import std.exception : assumeWontThrow;
 
+version (unittest) import fluent.asserts;
+
 class Parser
 {
     this(in string mapping = defaultMapping) nothrow pure @safe
@@ -21,7 +23,7 @@ class Parser
         }
     }
 
-    Operator[] opCall(in string code) pure @safe
+    Operator[] opCall(in string code) const pure @safe
     {
         return code
             .group
@@ -36,6 +38,49 @@ class Parser
     {
         assert(mapping_);
     }
+}
+
+unittest
+{
+    immutable parser = new Parser;
+
+    parser(`>><<+++---..,,[]`).should.equal([
+        Operator(OperatorType.pInc, 2),
+        Operator(OperatorType.pDec, 2),
+        Operator(OperatorType.vInc, 3),
+        Operator(OperatorType.vDec, 3),
+        Operator(OperatorType.vPut, 2),
+        Operator(OperatorType.vGet, 2),
+        Operator(OperatorType.pJmp, 1),
+        Operator(OperatorType.pEnd, 1)
+    ]);
+
+    parser(`>,<.++!--"[][]><`).should.equal([
+        Operator(OperatorType.pInc, 1),
+        Operator(OperatorType.vGet, 1),
+        Operator(OperatorType.pDec, 1),
+        Operator(OperatorType.vPut, 1),
+        Operator(OperatorType.vInc, 2),
+        Operator(OperatorType.vDec, 2),
+        Operator(OperatorType.pJmp, 1),
+        Operator(OperatorType.pEnd, 1),
+        Operator(OperatorType.pJmp, 1),
+        Operator(OperatorType.pEnd, 1),
+        Operator(OperatorType.pInc, 1),
+        Operator(OperatorType.pDec, 1)
+    ]);
+}
+
+unittest
+{
+    immutable parser = new Parser(`!"#$%&'(`);
+
+    parser(`>><<+++---..,,[]`).should.equal([]);
+
+    parser(`>,<.++!--"[][]><`).should.equal([
+        Operator(OperatorType.pInc, 1),
+        Operator(OperatorType.pDec, 1)
+    ]);
 }
 
 private enum defaultMapping = `><+-.,[]`;
