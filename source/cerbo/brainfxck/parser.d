@@ -13,9 +13,7 @@ class Parser
     this(in dstring mapping = defaultMapping) nothrow pure @safe
     in
     {
-        assert(mapping.length == defaultMapping.length, `The mapping is incomplete.`);
-
-        assert(mapping.uniq.array == mapping, `The mapping has duplicate elements.`);
+        assert(mapping.isValidMapping, `The mapping is incomplete.`);
     }
     do
     {
@@ -83,6 +81,23 @@ unittest
         Operator(OperatorType.pInc, 1),
         Operator(OperatorType.pDec, 1)
     ]);
+}
+
+bool isValidMapping(in dstring mapping) nothrow pure @safe
+{
+    return mapping.length == defaultMapping.length
+        && mapping.uniq.array == mapping;
+}
+
+unittest
+{
+    isValidMapping(`><+-.,[]`).should.equal(true);
+
+    isValidMapping(`><+-..[]`).should.equal(false);
+
+    isValidMapping(``).should.equal(false);
+
+    isValidMapping(`!"#$%&'()`).should.equal(false);
 }
 
 private enum defaultMapping = `><+-.,[]`;
