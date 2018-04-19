@@ -11,3 +11,8 @@ class MemoryOutException : MachineException
 {
     mixin basicExceptionCtors;
 }
+
+class OverflowException : MachineException
+{
+    mixin basicExceptionCtors;
+}
