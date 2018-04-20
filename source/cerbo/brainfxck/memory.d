@@ -4,7 +4,7 @@ import cerbo.brainfxck.exception : MemoryOutException, OverflowException;
 
 version (unittest) import fluent.asserts;
 
-package alias DataType = ubyte;
+package alias DataType = char;
 
 package class Memory
 {
